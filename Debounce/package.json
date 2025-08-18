@@ -1,0 +1,13 @@
+{
+  "name": "debounce",
+  "version": "1.0.0",
+  "description": "This project implements a `debounce` utility function in JavaScript.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node index.js"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
