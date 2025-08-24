@@ -10,7 +10,6 @@ export default function mergeData(sessions) {
     userData.duration += duration;
 
     equipment.forEach((item) => userData.equipment.add(item));
-    // console.log(userMap);
   });
 
   return Array.from(userMap.values()).map((u) => ({
