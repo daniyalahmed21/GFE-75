@@ -1,38 +1,45 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
 const App = () => {
-  const divRef = useRef();
-  const intervalRef = useRef(null);
-  const [timer, setTimer] = useState(0);
-  const [list, setList] = useState([]);
+  const [bars, setBars] = useState([]);
 
   const handleClick = () => {
-    intervalRef.current = setInterval(() => {
-      setTimer((prev) => {
-        if (prev >= 100) {
-          clearInterval(intervalRef.current);
-          intervalRef.current = null;
-          return prev;
-        }
-        return prev + 1;
-      });
+    const id = Date.now(); 
+    setBars((prev) => [...prev, { id, progress: 0 }]);
+
+    const interval = setInterval(() => {
+      setBars((prev) =>
+        prev.map((bar) =>
+          bar.id === id
+            ? {
+                ...bar,
+                progress: bar.progress < 100 ? bar.progress + 1 : 100,
+              }
+            : bar
+        )
+      );
     }, 50);
+
+    setTimeout(() => clearInterval(interval), 5000);
   };
 
-  useEffect(() => {
-    if (divRef.current) {
-      divRef.current.style.width = `${timer}%`;
-    }
-  }, [timer]);
-
   return (
-    <div className="p-10">
+    <div className="p-10 space-y-5">
       <button className="bg-gray-200 p-3 px-5" onClick={handleClick}>
         Add
       </button>
-      <div className="bg-gray-100 h-5 w-full mt-10">
-        <div ref={divRef} className="bg-green-400 h-full transition-all"></div>
-      </div>
+
+      {bars.map((bar) => (
+        <div
+          key={bar.id}
+          className="bg-gray-100 h-5 w-full rounded overflow-hidden"
+        >
+          <div
+            className="bg-green-400 h-full transition-all duration-50"
+            style={{ width: `${bar.progress}%` }}
+          ></div>
+        </div>
+      ))}
     </div>
   );
 };
